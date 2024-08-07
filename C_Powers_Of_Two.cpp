@@ -176,14 +176,73 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    
+    ll a,b;
+    cin>>a>>b;
+    ll setBits = __builtin_popcount(a);
+    vec v(31,0);
+    for(int i=0;i<31;i++){
+        if(a&(1<<i)){
+            v[i]++;
+        }
+    }
+    if(setBits > b){
+        no;
+    }
+    else{
+        ll flag = 0;
+        for(int i=30;i>0;i--){
+            if(flag){
+                break;
+            }
+            if (setBits - v[i] + v[i]*2 >= b)
+            {
+                for (ll j = 0; j <= v[i]; j++)
+                {
+                    if(setBits - j + 2*j == b){
+                        setBits += j;
+                        v[i-1] += 2*j;
+                        v[i] -= j;
+                        flag = 1;
+                        break;
+                    }
+                }
+                
+            }
+            else{
+                v[i-1] += v[i]*2;
+                setBits += v[i];
+                v[i] = 0;
+            }
+            
+        }
+        if (flag)
+        {
+            yes;
+            for (ll i = 0; i < 31; i++)
+            {
+                for (ll j = 0; j < v[i]; j++)
+                {
+                    ll x =pow(2,i);
+                    cout<< x<<" ";
+                }
+                
+            }
+            
+        }
+        else{
+            no;
+        }
+        
+        
+    }
+
 }
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int t;
-    cin >> t;
+    int t=1;
+    // cin >> t;
     while (t--)
     {
         solve();

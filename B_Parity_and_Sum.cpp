@@ -127,19 +127,18 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-int binarySearch(int arr[], int l, int r, int x)
+long long binarySearch(vector<ll> &arr,long long x)
 {
+    long long l = 0, r = arr.size()-1;
     while (l <= r)
     {
-        int m = l + (r - l) / 2;
-        if (arr[m] == x)
-            return m;
+        long long m = l + (r - l) / 2;
         if (arr[m] < x)
             l = m + 1;
         else
             r = m - 1;
     }
-    return -1;
+    return r;
 }
 int iseven(int n)
 {
@@ -176,6 +175,41 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
+    ll n = nxt();
+    ll om = INT_MIN,counte=0;
+    vec v(n,0),eve;
+    for (ll i = 0; i < n; i++)
+    {
+        v[i] = nxt();
+        if(v[i]&1){
+            om=max(om,v[i]);
+        }
+        else{
+            eve.push_back(v[i]);
+            counte++;
+        }
+    }
+    if(counte==n || counte == 0){
+        c(0);
+    }
+
+    else{
+        sort(eve.begin(),eve.end());
+        ll sum=0;
+        for (ll i = 0; i < eve.size(); i++)
+        {
+            if(om > eve[i]){
+                om += eve[i];
+            }
+            else{
+                sum =1;
+                break;
+            }
+        }
+        c(sum + counte);
+        
+        
+    }
     
 }
 int main()

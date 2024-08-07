@@ -173,16 +173,44 @@ inline int nxt()
     cin >> x;
     return x;
 }
+const int N = 200010;
+vector<vector<int> > prevp(31, vector<int>(N));
+void pre()
+{
+
+    for (int i = 0; i <= 30; i++)
+    {
+        for (int j = 1; j <= N; j++)
+        {
+            if (j & (1 << i))
+            {
+                prevp[i][j] = prevp[i][j - 1] + 1;
+            }
+            else
+            {
+                prevp[i][j] = prevp[i][j - 1];
+            }
+        }
+    }
+}
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    
+    int l, r;
+    cin >> l >> r;
+    int mn = INT_MAX;
+    for (int i = 0; i <= 30; i++)
+    {
+        mn = min(mn, r - l + 1 - (prevp[i][r] - prevp[i][l - 1]));
+    }
+    cout << mn << endl;
 }
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     int t;
+    pre();
     cin >> t;
     while (t--)
     {

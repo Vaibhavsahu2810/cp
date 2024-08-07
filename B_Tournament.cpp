@@ -176,14 +176,73 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    
+    ll n = nxt();
+    mapi count, pos;
+    vec v;
+    ll x = (n * (n - 1) / 2);
+    for (ll i = 1; i < x; i++)
+    {
+        ll a, b;
+        cin >> a >> b;
+        count[a]++;
+        count[b]++;
+        if (pos[a] == 0 && pos[b] == 0)
+        {
+            pos[a] = 1;
+            v.push_back(b);
+            v.insert(v.begin(), a);
+            for (ll i = 1; i < v.size() - 1; i++)
+            {
+                pos[v[i]]++;
+            }
+            pos[b] = v.size();
+        }
+        else if (pos[a] == 0 && pos[b] != 0)
+        {
+            v.insert(v.begin(), a);
+            pos[a] = 1;
+            for (ll i = 1; i < v.size() - 1; i++)
+            {
+                pos[v[i]]++;
+            }
+        }
+        else if (pos[a] != 0 && pos[b] == 0)
+        {
+            v.push_back(b);
+            pos[b] = v.size();
+        }
+        else
+        {
+            if (pos[a] > pos[b])
+            {
+                swap(v[pos[a] - 1], v[pos[b] - 1]);
+                swap(pos[a], pos[b]);
+            }
+        }
+    }
+    vec aa;
+    for (ll j = 1; j <= n; j++)
+    {
+        if (count[j] < n - 1)
+        {
+            aa.push_back(j);
+        }
+    }
+    if (pos[aa[0]] < pos[aa[1]])
+    {
+        c2(aa[0], aa[1]);
+    }
+    else
+    {
+        c2(aa[1], aa[0]);
+    }
 }
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int t;
-    cin >> t;
+    int t = 1;
+    // cin >> t;
     while (t--)
     {
         solve();

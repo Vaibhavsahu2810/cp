@@ -176,6 +176,42 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
+    ll n = nxt();
+    ll k = nxt();
+    vec a(n,0);
+    for (ll i = 0; i < n; i++){
+        a[i] = nxt();
+    }
+    sort(all(a));
+    ll ans = -1;
+    for (ll i = a[n-1]; i < a[n-1]+k+1; i++)
+    {
+        ll flag = 0;
+        for (ll j = 0; j < n; j++)
+        {
+            ll diff = i - a[j];
+            ll dv = diff / k;
+            if (dv % 2){
+                flag = 0;
+                break;
+            }
+            if (i >= a[j] + dv * k && i <= a[j] + (dv + 1) * k)
+            {
+                flag = 1;
+                continue;
+            }
+            else{
+                flag = 0;
+                break;
+            }
+
+        }
+        if(flag){
+            ans = i;
+            break;
+        }
+    }
+    cout << ans << "\n";
     
 }
 int main()

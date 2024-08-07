@@ -176,6 +176,25 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
+    ll n = nxt();
+    vec ans(n,0);
+    ll prev = nxt();
+    for (ll i = 1; i < n; i++){
+        ll x = nxt();
+        for (ll j = 0; j < 31; j++)
+        {
+            if ((prev & (1 << j)) && ((x & (1 << j)) == 0))
+            {
+                ans[i] += pow(2,j);
+            }
+        }
+        prev = prev | x;
+    }
+    for (ll i = 0; i < n; i++)
+    {
+        cout << ans[i] << " ";
+    }
+    cout << "\n";
     
 }
 int main()
