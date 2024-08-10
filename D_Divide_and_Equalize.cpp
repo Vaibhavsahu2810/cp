@@ -145,6 +145,25 @@ int iseven(int n)
 {
     return !(n & 1);
 }
+#define $ 10e6+10
+vector<ll> prime(10e6+10, 1);
+void blackbox()
+{
+    prime[0] = prime[1] = 0;
+    for (ll i = 2; i * i < $; i++)
+    {
+        if (prime[i] == 1)
+        {
+            for (ll j = 2 * i; j < $; j += i)
+            {
+                if(prime[j] == 1){
+                prime[j] = i;
+                }
+            }
+        }
+    }
+}
+
 
 using vec = vector<ll>;
 using pii = pair<ll, ll>;
@@ -160,43 +179,45 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    ll n = nxt();
-    ll k = nxt();
-    vec a(n,0);
-    for (ll i = 0; i < n; i++){
-        a[i] = nxt();
-    }
-    sort(all(a));
-    ll ans = -1;
-    for (ll i = a[n-1]; i < a[n-1]+k+1; i++)
+    ll n;
+    cin >> n;
+    ll br[n];
+    in(br,n);
+    map<ll, ll> mp;
+    for (ll i = 0; i < n; i++)
     {
-        ll flag = 0;
-        for (ll j = 0; j < n; j++)
+        ll b = br[i];
+        while (b > 1)
         {
-            ll diff = i - a[j];
-            ll dv = diff / k;
-            if (dv % 2){
-                flag = 0;
-                break;
-            }
-            if (i >= a[j] + dv * k && i <= a[j] + (dv + 1) * k)
+            if (prime[b] == 1)
             {
-                flag = 1;
-                continue;
-            }
-            else{
-                flag = 0;
+                mp[b]++;
                 break;
             }
-
-        }
-        if(flag){
-            ans = i;
-            break;
+            ll op = prime[b];
+            while (b % op == 0)
+            {
+                mp[op]++;
+                b /= op;
+            }
+            
         }
     }
-    cout << ans << "\n";
-    
+    for (auto it : mp)
+    {
+        auto kl = it.second;
+        if (kl % n == 0)
+            continue;
+        else
+        {
+            no;
+         
+            return;
+        }
+    }
+    yes;
+
+    return;
 }
 int main()
 {
@@ -204,6 +225,7 @@ int main()
     cin.tie(0);
     int t;
     cin >> t;
+    blackbox();
     while (t--)
     {
         solve();

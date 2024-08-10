@@ -19,6 +19,7 @@
 #include <memory>
 #include <new>
 #include <numeric>
+#include <utility>
 #include <ostream>
 #include <queue>
 #include <set>
@@ -145,6 +146,22 @@ int iseven(int n)
 {
     return !(n & 1);
 }
+#define $ 1000000
+vector<int> prime(1000000, 1);
+void blackbox()
+{
+    prime[0] = prime[1] = 0;
+    for (ll i = 2; i * i < $; i++)
+    {
+        if (prime[i] == 1)
+        {
+            for (ll j = 2 * i; j < $; j += i)
+            {
+                prime[j] = 0;
+            }
+        }
+    }
+}
 
 using vec = vector<ll>;
 using pii = pair<ll, ll>;
@@ -160,53 +177,67 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    ll n = nxt();
-    ll k = nxt();
-    vec a(n,0);
-    for (ll i = 0; i < n; i++){
-        a[i] = nxt();
-    }
-    sort(all(a));
-    ll ans = -1;
-    for (ll i = a[n-1]; i < a[n-1]+k+1; i++)
-    {
-        ll flag = 0;
-        for (ll j = 0; j < n; j++)
-        {
-            ll diff = i - a[j];
-            ll dv = diff / k;
-            if (dv % 2){
-                flag = 0;
-                break;
-            }
-            if (i >= a[j] + dv * k && i <= a[j] + (dv + 1) * k)
-            {
-                flag = 1;
-                continue;
-            }
-            else{
-                flag = 0;
-                break;
-            }
+    string s;
+    cin >> s;
+    ll n = s.size();
+    ll ans = 0;
+    std::vector<std::pair<ll, ll> > v;
 
+    for (ll i = 0; i < n; i++)
+    {
+        if (s[i] == 'v')
+        {
+            ll c = 0;
+            while (i < n && s[i] == 'v')
+            {
+                c++;
+                i++;
+            }
+            if (c > 1)
+                v.push_back({0, c - 1}); 
+            i--;                        
         }
-        if(flag){
-            ans = i;
-            break;
+        else if (s[i] == 'o')
+        {
+            ll c = 0;
+            while (i < n && s[i] == 'o')
+            {
+                c++;
+                i++;
+            }
+            v.push_back({1, c});
+            i--; 
         }
     }
+
+    for (ll i = 0; i < v.size(); i += 2)
+    {
+        if (v[i].first == 0)
+        {
+            ll j = i + 1, a = v[i].second;
+            while (j + 1 < v.size())
+            {
+                ll b = v[j].second;
+                ll c = v[j + 1].second;
+                ans += a * b * c;
+                j += 2;
+            }
+        }
+    }
+
     cout << ans << "\n";
-    
 }
+
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int t;
-    cin >> t;
+    int t=1;
+    // cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
+

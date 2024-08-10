@@ -145,6 +145,22 @@ int iseven(int n)
 {
     return !(n & 1);
 }
+#define $ 1000000
+vector<int> prime(1000000, 1);
+void blackbox()
+{
+    prime[0] = prime[1] = 0;
+    for (ll i = 2; i * i < $; i++)
+    {
+        if (prime[i] == 1)
+        {
+            for (ll j = 2 * i; j < $; j += i)
+            {
+                prime[j] = 0;
+            }
+        }
+    }
+}
 
 using vec = vector<ll>;
 using pii = pair<ll, ll>;
@@ -161,43 +177,70 @@ inline int nxt()
 void solve()
 {
     ll n = nxt();
-    ll k = nxt();
-    vec a(n,0);
-    for (ll i = 0; i < n; i++){
-        a[i] = nxt();
-    }
-    sort(all(a));
-    ll ans = -1;
-    for (ll i = a[n-1]; i < a[n-1]+k+1; i++)
+    vec v(n, 0);
+    for (ll i = 0; i < n; i++)
     {
-        ll flag = 0;
-        for (ll j = 0; j < n; j++)
+        ll x = nxt();
+        v[i] = x;
+        if (v[i] & 1)
         {
-            ll diff = i - a[j];
-            ll dv = diff / k;
-            if (dv % 2){
-                flag = 0;
-                break;
-            }
-            if (i >= a[j] + dv * k && i <= a[j] + (dv + 1) * k)
-            {
-                flag = 1;
-                continue;
-            }
-            else{
-                flag = 0;
-                break;
-            }
-
+            v[i] += v[i] % 10;
         }
-        if(flag){
-            ans = i;
-            break;
+        if (v[i] % 10 == 6)
+        {
+            v[i] += v[i] % 10;
         }
     }
-    cout << ans << "\n";
+    sort(all(v));
+
+    for (int i = n - 1; i > 0; i--)
+    {
+        int b = v[i];
+        int a = v[i - 1];
+        if (a == b)
+            continue;
+        if (a % 10 == 0 || b % 10 == 0)
+        {
+            no;
+            
+            return;
+        }
+        ll r = a % 10;
+        ll sr = b % 10;
+        if (r == 2 || r == 4 || r == 8)
+        {
+            if (sr == 6 && ((b / 10 - (a / 10))) % 2 != 0)
+                ;
+            else if ((sr == 2 || sr == 4 || sr == 8) && ((b / 10 - (a / 10))) % 2 == 0)
+                ;
+            else
+            {
+                no;
+                
+                return;
+            }
+        }
+        else if (r == 6)
+        {
+            // pr("yes");
+            if ((sr == 2 || sr == 4 || sr == 8) && ((b / 10 - (a / 10))) % 2 != 0)
+                ;
+            else if (sr == 6 && ((b / 10 - (a / 10))) % 2 == 0)
+                ;
+            else
+            {
+                no;
+                
+                return;
+            }
+        }
+        v[i - 1] = v[i];
+    }
+    yes;
     
+    return;
 }
+
 int main()
 {
     ios_base::sync_with_stdio(0);

@@ -145,6 +145,22 @@ int iseven(int n)
 {
     return !(n & 1);
 }
+#define $ 1000000
+vector<int> prime(1000000, 1);
+void blackbox()
+{
+    prime[0] = prime[1] = 0;
+    for (ll i = 2; i * i < $; i++)
+    {
+        if (prime[i] == 1)
+        {
+            for (ll j = 2 * i; j < $; j += i)
+            {
+                prime[j] = 0;
+            }
+        }
+    }
+}
 
 using vec = vector<ll>;
 using pii = pair<ll, ll>;
@@ -162,40 +178,28 @@ void solve()
 {
     ll n = nxt();
     ll k = nxt();
-    vec a(n,0);
-    for (ll i = 0; i < n; i++){
-        a[i] = nxt();
-    }
-    sort(all(a));
-    ll ans = -1;
-    for (ll i = a[n-1]; i < a[n-1]+k+1; i++)
+    vec v(n,0);
+    in(v,n);
+    ll c= 0;
+    for (ll i = 1; i <n; i++)
     {
-        ll flag = 0;
-        for (ll j = 0; j < n; j++)
-        {
-            ll diff = i - a[j];
-            ll dv = diff / k;
-            if (dv % 2){
-                flag = 0;
-                break;
+        if(i < k || i > n-k-1){
+            if(v[i]*2 <= v[i-1] ){
+                if(i < k){c+=i;}
+                else{
+                    c+=n-i;
+                }
             }
-            if (i >= a[j] + dv * k && i <= a[j] + (dv + 1) * k)
-            {
-                flag = 1;
-                continue;
-            }
-            else{
-                flag = 0;
-                break;
-            }
-
         }
-        if(flag){
-            ans = i;
-            break;
+        else{
+            if(v[i]*2 <= v[i-1] ){
+                c+=k;
+            }
         }
+      //  cout<<c<<" ";
     }
-    cout << ans << "\n";
+    ll x = min(n-k,c);
+    c(n-x-k);
     
 }
 int main()

@@ -127,24 +127,24 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-int binarySearch(int arr[], int l, int r, int x)
+long long binarySearch(vector<ll> &arr, long long x)
 {
+    long long l = 0,r = arr.size()-1;
     while (l <= r)
     {
-        int m = l + (r - l) / 2;
-        if (arr[m] == x)
-            return m;
-        if (arr[m] < x)
+        long long m = l + (r - l) / 2;
+        if (arr[m] <= x)
             l = m + 1;
         else
             r = m - 1;
     }
-    return -1;
+    return r;
 }
 int iseven(int n)
 {
     return !(n & 1);
 }
+#define $ 1000000
 
 using vec = vector<ll>;
 using pii = pair<ll, ll>;
@@ -157,46 +157,29 @@ inline int nxt()
     cin >> x;
     return x;
 }
+vector<ll> pre;
+void ca(){
+ll xx = 1;
+while (xx <= 200000)
+{
+    pre.pb(xx);
+    xx *= 3;
+}
+}
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    ll n = nxt();
-    ll k = nxt();
-    vec a(n,0);
-    for (ll i = 0; i < n; i++){
-        a[i] = nxt();
-    }
-    sort(all(a));
-    ll ans = -1;
-    for (ll i = a[n-1]; i < a[n-1]+k+1; i++)
-    {
-        ll flag = 0;
-        for (ll j = 0; j < n; j++)
-        {
-            ll diff = i - a[j];
-            ll dv = diff / k;
-            if (dv % 2){
-                flag = 0;
-                break;
-            }
-            if (i >= a[j] + dv * k && i <= a[j] + (dv + 1) * k)
-            {
-                flag = 1;
-                continue;
-            }
-            else{
-                flag = 0;
-                break;
-            }
+    ll a,b;
+    cin>>a>>b;
 
-        }
-        if(flag){
-            ans = i;
-            break;
-        }
+    ll ans = (binarySearch(pre,a)+1)*2;
+    for (ll i = a+1; i < b+1; i++)
+    {
+        ans += (binarySearch(pre, i) + 1);
     }
-    cout << ans << "\n";
+    cout<<ans<<endl;
     
+
 }
 int main()
 {
@@ -204,6 +187,7 @@ int main()
     cin.tie(0);
     int t;
     cin >> t;
+    ca();
     while (t--)
     {
         solve();
