@@ -164,7 +164,7 @@ void blackbox()
 
 using vec = vector<ll>;
 using pii = pair<ll, ll>;
-using mapi = map<char, ll>;
+using mapi = map<ll, ll>;
 using si = set<ll>;
 
 inline int nxt()
@@ -176,45 +176,15 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    mapi mp;
-    ll n;
-    cin>>n;
-    string s;
-    cin>>s;
-    for(int i=0;i<n;i++){
-        mp[s[i]]++;
-    }
-    priority_queue<pair<ll, char> > pq;
-    for (auto it : mp)
-    {
-        pq.push({it.second, it.first});
-    }
-
-    string ans;
-    pair<ll,char> last = {0, ' '};
-
-    while (!pq.empty())
-    {
-        auto it = pq.top();
-        int count = it.first;
-        char ch = it.second;
-        pq.pop();
-        ans += ch;
-        if (last.first > 0)
-        {
-            pq.push(last);
-        }
-        last = {count - 1, ch};
-    }
-
-    int count = last.first;
-    char ch = last.second;
-    if (count > 0)
-    {
-        ans += string(count, ch);
-    }
-
-    cout << ans << endl;
+    int n, m;
+    cin >> n >> m;
+    int i;
+    for (i = 0; i < 2000; i++)
+        cout << 5;
+    cout << endl;
+    for (i = 0; i < 1999; i++)
+        cout << 4;
+    cout << 5 << endl;
 }
 int main()
 {

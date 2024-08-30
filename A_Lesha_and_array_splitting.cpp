@@ -164,7 +164,7 @@ void blackbox()
 
 using vec = vector<ll>;
 using pii = pair<ll, ll>;
-using mapi = map<char, ll>;
+using mapi = map<ll, ll>;
 using si = set<ll>;
 
 inline int nxt()
@@ -176,52 +176,53 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    mapi mp;
-    ll n;
-    cin>>n;
-    string s;
-    cin>>s;
-    for(int i=0;i<n;i++){
-        mp[s[i]]++;
-    }
-    priority_queue<pair<ll, char> > pq;
-    for (auto it : mp)
+    ll n = nxt();
+    vector<int> v(n);
+    int i;
+    for (i = 0; i < n; i++)
+        cin >> v[i];
+    vector<pair<int, int> > ans;
+    for (i = 0; i < n;)
     {
-        pq.push({it.second, it.first});
-    }
-
-    string ans;
-    pair<ll,char> last = {0, ' '};
-
-    while (!pq.empty())
-    {
-        auto it = pq.top();
-        int count = it.first;
-        char ch = it.second;
-        pq.pop();
-        ans += ch;
-        if (last.first > 0)
+        int c = 0;
+        int j = i;
+        while ((c + (v[j] != 0)) <= 1 && j < n)
         {
-            pq.push(last);
+            c += (v[j] != 0);
+            j++;
         }
-        last = {count - 1, ch};
+        if (c > 0)
+            ans.push_back({i + 1, j});
+        i = j;
     }
-
-    int count = last.first;
-    char ch = last.second;
-    if (count > 0)
+    if (ans.empty())
     {
-        ans += string(count, ch);
+        cout << "NO\n";
+        return;
     }
-
-    cout << ans << endl;
+    sort(ans.begin(), ans.end());
+    int check = 0;
+    for (auto it : ans)
+    {
+        if (it.first != (check + 1))
+        {
+            cout << "NO\n";
+            return;
+        }
+        check = it.second;
+    }
+    cout << "YES\n";
+    cout << ans.size() << endl;
+    for (auto it : ans)
+        cout << it.first << " " << it.second << endl;
+    return;
 }
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int t;
-    cin >> t;
+    int t=1;
+   // cin >> t;
     while (t--)
     {
         solve();
