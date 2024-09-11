@@ -15,6 +15,7 @@
 #include <limits>
 #include <list>
 #include <locale>
+
 #include <map>
 #include <memory>
 #include <new>
@@ -31,6 +32,7 @@
 #include <utility>
 #include <valarray>
 #include <vector>
+
 
 using namespace std;
 
@@ -141,7 +143,8 @@ void find_three_multiples(ll N, ll &a, ll &b, ll &c)
 void solve()
 {
     ll x,y,z,k;
-    cin>>x>>y>>z>>k;
+    cin>>x>>y>>z;
+    
     ll a,b,c;
     find_three_multiples(k, a, b, c);
     std::cout << "The three multiples of " << k<< " are " << a << ", " << b << ", and " << c << "." << std::endl;
@@ -157,4 +160,5 @@ int main()
         solve();
     }
     return 0;
+
 }
