@@ -176,7 +176,6 @@ inline int nxt()
 /*--------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-    
 }
 int main()
 {
@@ -190,3 +189,122 @@ int main()
     }
     return 0;
 }
+
+
+bool isConnected(int start, int end, vector<vector<int>> &adj, vector<bool> &visited) {
+    queue<int> q;
+    q.push(start);
+    visited[start] = true;
+
+    while (!q.empty())
+    {
+        int node = q.front();
+        q.pop();
+
+        for (int child : adj[node])
+        {
+            if (!visited[child])
+            {
+                visited[child] = true;
+                q.push(child);
+            }
+            if (child == end)
+                return true;
+        }
+    }
+    return false;
+};
+double perdis(int x1, int y1, int x2, int y2, int cx, int cy) {
+    int A = y2 - y1;
+    int B = x1 - x2;
+    int C = x2 * y1 - x1 * y2;
+
+    double distance = abs(A * cx + B * cy + C) / sqrt(A * A + B * B);
+    return distance;
+}
+bool canReachCorner(int xCorner, int yCorner, vector<vector<int>> &circles)
+{
+    int n = circles.size();
+    vector<vector<int>> adj(n + 4);
+
+    for (int i = 0; i < n; i++)
+    {
+        int x = circles[i][0], y = circles[i][1], r = circles[i][2];
+
+        if (perdis(0, 0, 0, yCorner, x, y) <= r) {
+            adj[n].push_back(i);
+            adj[i].push_back(n);
+        }
+        if (perdis(xCorner, 0, xCorner, yCorner, x, y) <= r) {
+            adj[n + 1].push_back(i);
+            adj[i].push_back(n + 1);
+        }
+        if (perdis(0, 0, xCorner, 0, x, y) <= r) {
+            adj[n + 2].push_back(i);
+            adj[i].push_back(n + 2);
+        }
+        if (perdis(0, yCorner, xCorner, yCorner, x, y) <= r) {
+            adj[n + 3].push_back(i);
+            adj[i].push_back(n + 3);
+        }
+
+        for (int j = i + 1; j < n; j++)
+        {
+            int x2 = circles[j][0], y2 = circles[j][1], r2 = circles[j][2];
+            int distSq = (x - x2) * (x - x2) + (y - y2) * (y - y2);
+            if (distSq <= (r + r2) * (r + r2))
+            {
+                adj[i].push_back(j);
+                adj[j].push_back(i);
+            }
+        }
+    }
+    for(int i = 1 ; i < n+4 ; i++){
+        cout << i << " : ";
+        for(auto x : adj[i]){
+            cout << x << " ";
+        }
+        cout << endl;
+    }
+
+    vector<bool> visited(n + 4, false);
+
+
+
+    if (isConnected(n, n + 1, adj, visited))
+        return false; 
+    fill(visited.begin(), visited.end(), false);
+    if (isConnected(n + 2, n + 3, adj, visited))
+        return false; 
+    fill(visited.begin(), visited.end(), false);
+    if(isConnected(n, n + 2, adj, visited))
+        return false;
+    fill(visited.begin(), visited.end(), false);
+    if(isConnected(n + 1, n + 3, adj, visited))
+        return false;
+    
+
+    return true;
+}
+
+class Solution
+{
+public:
+    vector<int> topKFrequent(vector<int> &nums, int k)
+    {
+        unordered_map<int, int> mp;
+        for(auto x : nums){
+            mp[x]++;
+        }
+        priority_queue<pair<int,int>> pq;
+        for(auto x : mp){
+            pq.push({x.second,x.first});
+        }   
+        vector<int> res;
+        while(k--){
+            res.push_back(pq.top().second);
+            pq.pop();
+        }
+        return res;
+    }
+};
