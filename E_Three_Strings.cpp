@@ -187,54 +187,30 @@ ll sqrrt(ll x)
     return lo;
 }
 /*--------------------------------------------------------------------------------------------------------------*/
+int dpsolve(ll i, ll j, string &a, string &b, string &c, vector<vector<ll> > &dp)
+{
+    if(i==a.size() && j==b.size())
+        return 0;
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+    int pos = i+j;
+    int mim = INT_MAX;
+    if(i<a.size()){
+        mim = min(mim, dpsolve(i+1, j, a, b, c, dp) + (a[i]!=c[pos]));
+    }
+    if(j<b.size()){
+        mim = min(mim, dpsolve(i, j+1, a, b, c, dp) + (b[j]!=c[pos]));
+    }
+    return dp[i][j] = mim;
+}
 void solve()
 {
     string a, b, c;
     cin >> a >> b >> c;
     ll n = a.size(), m = b.size(), k = c.size();
-    a = " " + a;
-    b = " " + b;
-    c = " " + c;
-
-    vector<vector<ll> > dp(n + 1, vector<ll>(k + 1, 0));
-    vector<vector<ll> > dp1(m + 1, vector<ll>(k + 1, 0));
-
-    for (ll i = 1; i <= n; i++)
-    {
-        for (ll j = 1; j <= k; j++)
-        {
-            if (a[i] == c[j])
-            {
-                dp[i][j] = dp[i - 1][j] + 1;
-            }
-            else
-            {
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-            }
-      //      cout << dp[i][j] << " ";
-        }
-     //   cout << endl;
-    }
-
-    for (ll i = 1; i <= m; i++)
-    {
-        for (ll j = 1; j <= k; j++)
-        {
-            if (b[i] == c[j])
-            {
-                dp1[i][j] = dp1[i - 1][j] + 1;
-            }
-            else
-            {
-                dp1[i][j] = max(dp1[i - 1][j], dp1[i][j - 1]);
-            }
-        //    cout << dp1[i][j] << " ";
-        }
-     //   cout << endl;
-    }
-
-    ll ans = k - dp1[m][k] - dp[n][k];
-    cout << ans << endl;
+    vector<vector<ll> > dp(n + 1, vector<ll>(m + 1, -1));
+    cout<<dpsolve(0, 0, a, b, c, dp)<<endl;
 }
 
 int main()
